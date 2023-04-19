@@ -1,8 +1,8 @@
 # Running Keycloak in docker container and connect to mssql
 
-+Running in Local:
+# Running in Local:
 
-# docker-compose up -d
+#docker-compose up -d
 
 + login keycloak: 
 
@@ -16,13 +16,14 @@ db: sa
 
 pass : P@ss@12345
 
-+ Running in Linux: 
+# Running in Linux: 
 
-# docker-compose up -d 
+#docker-compose up -d 
 
-+ fix error HTTPS require: 
+# fix error HTTPS require: 
 
-# docker exec -it {contaierID} bash
+#docker exec -it {contaierID} bash
+
 cd /opt/jboss/keycloak/bin
 
 $ ./kcadm.sh config credentials --server http://localhost:8080/auth --realm master --user admin
