@@ -1,0 +1,39 @@
+version: "3.8"
+
+services: 
+  mssql-server:
+    container_name: mssql
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 1433:1433
+    environment: 
+     - ACCEPT_EULA=Y
+     - SA_PASSWORD=P@ss@12345
+     - MSSQL_PID=Developer
+    networks: 
+      - keycloak-network
+
+  mssql-tools:
+    container_name: mssql-tools
+    image: mcr.microsoft.com/mssql-tools:latest
+    command: /bin/bash -c 'until /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "P@ss@12345" -Q "CREATE DATABASE keycloakdb"; do sleep 5; done'
+    networks: 
+      - keycloak-network
+
+  keycloak-server:
+    container_name: keycloak
+    image: jboss/keycloak
+    ports: 
+      - 8080:8080
+    environment: 
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - DB_VENDOR=mssql
+      - DB_USER=sa
+      - DB_PASSWORD=P@ss@12345
+      - DB_DATABASE=keycloakdb
+    networks: 
+      - keycloak-network
+networks: 
+  keycloak-network:
+    driver: bridge
